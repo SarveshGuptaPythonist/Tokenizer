@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>TokenIzer - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png'%}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png'%}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/icofont/icofont.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/venobox/venobox.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css'%}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css'%}" rel="stylesheet">
+  <style>
+    .card {
+      margin-right: 10px;
+      margin-bottom: 10px;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo mr-auto">
+        <h1 class="text-light"><a href="/"><span>TokenIzer</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+
+          <li class="get-started"><a href="/vendor/logout">Logout</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+    <!-- message module django ----------------------------------------------------------->
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      <strong>Message : </strong> {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+    <!-- message module django ----------------------------------------------------------->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up">{{UAI.businessname}}</h1>
+          <br>
+          <h2 data-aos="fade-up" data-aos-delay="400">{{UAI.objective}}.</h2>
+          <!--<h2 data-aos="fade-up" data-aos-delay="400"><B>TOKEN ID:</B> VID04032021.</h2>-->
+          <h2 data-aos="fade-up" data-aos-delay="400"><B>NOTE:</B> {{UAI.sticknote}}</h2>
+          <div data-aos="fade-up" data-aos-delay="800">
+            <a href="/vendor/dashBoard/" class="btn-get-started scrollto">List Tokens</a>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
+          <img src="{% static 'assets/img/hero-img.png'%}" class="img-fluid animated" alt="">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+
+  <div class='container'>
+    <br>
+    <h2 style = "text-align: center;"> Available Tokens:-</h2>
+    <br>
+
+    <div class='row'>
+      <!--<form action="/vendor/rc/" method="POST">{% csrf_token %}-->
+      <form action="/vendor/dashBoard/" method="POST">{% csrf_token %}
+
+        {% for i in listToken %}
+        {% if i.completed == False %}
+        {% if i.rejected == False %}
+        <div class="card" style="width: 16rem;">
+          <div class="card-body">
+            <h5 class="card-title"><b>Token Id: {{i.randomToken}}</b></h5>
+            <h6 class="card-title"> {{i.phoneNum}}</h6>
+            <p class="card-text">{{i.addNote}}.</p>
+            <!--<button href="/vendor/rc/1/{{ i.randomToken }}" class="btn btn-primary">complete</button>
+          <button href="/vendor/rc/2/{{ i.randomToken }}" class="btn btn-primary">Reject</button>
+          {{ i.completed }}, {{ i.rejected }}
+          -->
+            <ul>
+              <li class="get-started"><a href="/vendor/roc/{{ i.randomToken }}/{{ 1}}">complete</a></li>
+              <li class="get-started"><a href="/vendor/roc/{{ i.randomToken }}/{{ 2}}">Reject</a></li>
+            </ul>
+      </form>
+    </div>
+  </div>
+  {%endif%}
+  {%endif%}
+  {% endfor%}
+  <div class="card" style="width: 18rem;">
+    <form action="/vendor/dashBoard/" method="POST">{% csrf_token %}
+      <div class="card-body">
+        <p class="card-title">
+          <input type="text" id="randomToken" placeholder="Token" name="randomToken">
+        </p>
+        <p class="card-title"> <input type="number" id="mobile" placeholder="Mobile" name="mobile"><br></p>
+        <p class="card-text"><input type="text" id="note" placeholder="Note" name="note"><br></p>
+        <button type="submit" class="btn btn-primary">Generate Token</button>
+        <!--  <a href="/vendor/dashboard/{{UAI.user}}" class="btn btn-primary center">Submit</a>-->
+      </div>
+    </form>
+  </div>
+
+  </div>
+  </div>
+
+
+
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-lg-6 text-lg-left text-center">
+          <div class="copyright">
+            &copy; Copyright <strong>TokenIzer</strong>. All Rights Reserved
+          </div>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/vesperr-free-bootstrap-template/ -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+            <a href="#intro" class="scrollto">Home</a>
+            <a href="#about" class="scrollto">About</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <main id="main">
+
+
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js'%}"></script>
+    <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/counterup/counterup.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/venobox/venobox.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js'%}"></script>
+
+    <!-- Template Main JS File -->
+    <script type="text/javascript">
+      $(window).on('load', function () {
+        $('#myModal').modal('show');
+      });
+    </script>
+    <script>
+      //document.getElementById("username").value = {{ UAI.user }};
+      document.getElementById("randomToken").value = {{ token }};
+      // document.getElementById("username").defaultValue = {{UAI.user}};
+    </script>
+    <script>
+      {% if thank %}
+      alert('Thanks for generating tokens with us. ');
+      //  document.location = "/";
+      {% endif %}
+    </script>
+
+    <script src="{% static 'assets/js/main.js'%}"></script>
+
+</body>
+
+</html>
